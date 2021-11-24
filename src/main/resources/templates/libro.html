@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <!--Head -->
+    <head th:replace="/fragments/head :: head"></head>
+
+    <body>
+
+        <!-- Navigation -->
+        <nav th:replace="/fragments/navbar :: nav"></nav>
+
+        <!-- Header 
+       <header th:replace="/fragments/headergenerico :: header"></header>-->
+
+        <div class="container ">
+            <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
+            <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+            <h1> Listado de Libros</h1>
+            <table class="table table-hover table-bordered">                    
+                <thead class="thead-dark text-center">
+                    <tr class="table-light">					
+                        <th scope="col">Isbn</th>
+                        <th scope="col">Titulo</th>					
+                        <th scope="col">Anio</th>
+                        <th scope="col">E</th>
+                        <th scope="col">P</th>
+                        <th scope="col">R</th>
+                        <th scope="col">Autor</th>
+                        <th scope="col">Editorial</th>
+                        <th scope="col">Esta activo?</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="libro : ${libros}">
+                        <!-- <th scope="row" th:text="${libro.id}"></th>-->
+                        <td scope="row" th:text="${libro.isbn}"></td>
+                        <td class="col-4" th:text="${libro.titulo}"></td>
+                        <td class="col-1"  th:text="${libro.anio}"></td>
+                        <td th:text="${libro.ejemplares}"></td>
+                        <td th:text="${libro.ePrestados}"></td>
+                        <td th:text="${libro.eRestantes}"></td>
+                        <td th:text="${libro.autor.nombre}"></td>
+                        <td th:text="${libro.editorial.nombre}"></td>
+                        <td>
+                            <i th:if="${libro.alta}" class="fa fa-circle text-success"></i> <!--Si el libro esta activo por circulo verde -->
+                            <i th:unless="${libro.alta}" class="fa fa-circle" style="color:red;"></i> <!--si es de otra manera pon circulo rojo -->
+                        </td>
+                        <td>
+                            <a th:href="@{/alta/__${libro.id}__}"><i class="fa fa-arrow-up"></i></a>  <!--Icono Flechita -->
+                            <a th:href="@{/baja/__${libro.id}__}"><i class="fa fa-ban"></i></a>  <!--Icono Baja -->
+                            <a th:href="@{/editarlibro/__${libro.id}__}"><i class="fas fa-feather-alt"></i></a>  <!--Icono Modificar -->
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <section class="py-5 text-center container">
+                <div class="row py-lg-5">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        <a th:href="@{/}" class="btn btn-primary my-2">Volver</a>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer th:replace="/fragments/footer :: footer"></footer>
+
+        <!-- Bootstrap core JavaScript -->
+        <script th:replace="/fragments/boostjs :: script"></script>
+    </body>
+</html>

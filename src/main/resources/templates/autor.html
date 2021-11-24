@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+    <!--Head -->
+    <head th:replace="/fragments/head :: head"></head>
+    <body>
+
+        <!-- Navigation -->
+        <nav th:replace="/fragments/navbar :: nav"></nav>
+
+       <div class="container ">
+            <h1> Listado de Autores</h1>
+		<table class="table table-hover">                    
+			<thead class="thead-dark">
+				<tr class="table-light">					
+					<th scope="col">N°</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Modificar</th>                                        
+				</tr>
+			</thead>
+			<tbody th:each="autor : ${autores}">
+				<tr>
+					<!-- <th scope="row" th:text="${libro.id}"></th>-->
+					<td scope="row" th:text="${autor.id}"></td>
+					<td th:text="${autor.nombre}"></td>                                       
+					<td>
+                                            <i th:if="${autor.alta}" class="fa fa-circle text-success"></i> <!--Si el libro esta activo por circulo verde -->
+                                            <i th:unless="${autor.alta}" class="fa fa-circle" style="color:red;"></i> <!--si es de otra manera pon circulo rojo -->
+					</td>
+					<td>
+					<a th:href="@{/autor/alta/__${autor.id}__}"><i class="fa fa-arrow-up"></i></a>  <!--Icono Flechita -->
+					<a th:href="@{/autor/baja/__${autor.id}__}"><i class="fa fa-ban"></i></a>  <!--Icono Baja -->
+                                        <a th:href="@{/autor/editarautor/__${autor.id}__}"><i class="fas fa-feather-alt"></i></a>  <!--Icono Modificar -->
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+		<section class="py-5 text-center container">
+			<div class="row py-lg-5">
+				<div class="col-lg-6 col-md-8 mx-auto">
+					<a th:href="@{/}" class="btn btn-primary my-2">Volver</a>
+					</p>
+				</div>
+			</div>
+		</section>
+
+	</div>
+
+        <!-- Footer -->
+        <footer th:replace="/fragments/footer :: footer"></footer>
+
+        <!-- Bootstrap core JavaScript -->
+        <script th:replace="/fragments/boostjs :: script"></script>
+    </body>
+</html>
