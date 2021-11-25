@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Aleidy Alfonzo
  */
 @Controller
-//@RequestMapping("/autor")
+@RequestMapping("/autor")
 public class AutorController {
     
     @Autowired

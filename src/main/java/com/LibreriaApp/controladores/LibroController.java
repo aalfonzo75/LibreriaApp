@@ -25,7 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author Aleidy Alfonzo
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/libro")
 public class LibroController {
 
     @Autowired
@@ -39,15 +39,14 @@ public class LibroController {
 
     @GetMapping("/crearlibro")
     public String guardarLibro(ModelMap model, @RequestParam(required = false) String id) {
-        System.out.println("hola");
-
+       
         if (id != null) {
             Libro libro = libroServicio.buscarPorId(id);
 
             if (libro != null) {
                 model.addAttribute("libro", libro);
             } else {
-                return "redirect:/libro";
+                return "redirect:/libro/listalibro";
             }
 
         } else {
@@ -90,18 +89,18 @@ public class LibroController {
 //    }
     @PostMapping("/crearlibro")
     public String guardarLibro(ModelMap model, RedirectAttributes redirectAtr, @ModelAttribute Libro libro) {
-        System.out.println("isbn" + libro.getIsbn());
-        System.out.println("titulo" + libro.getTitulo());
-        System.out.println("anio" + libro.getAnio());
-        System.out.println("ejemplares" + libro.getEjemplares());
-        System.out.println("autor" + libro.getAutor());
-        System.out.println("editorial" + libro.getEditorial());
+//        System.out.println("isbn" + libro.getIsbn());
+//        System.out.println("titulo" + libro.getTitulo());
+//        System.out.println("anio" + libro.getAnio());
+//        System.out.println("ejemplares" + libro.getEjemplares());
+//        System.out.println("autor" + libro.getAutor());
+//        System.out.println("editorial" + libro.getEditorial());
 
         try {
 
             libroServicio.crearLibro(libro);
             model.put("exito", "Registro exitoso");
-            return "redirect:/libro";  //retorno esa vista
+            return "redirect:/libro/listalibro";  //retorno esa vista
         } catch (ErrorServicio e) {
             model.put("error", "Falto algun dato");
             return "crearlibro";  //retorno esa vista
@@ -128,13 +127,13 @@ public class LibroController {
         }
     }
 
-    @GetMapping("/libro")
+    @GetMapping("/listalibro")
     public String listaLibros(ModelMap model) {
 
         List<Libro> todos = libroServicio.listaTodosLibros();
         model.addAttribute("libros", todos);
 
-        return "libro";  //retorno esa vista
+        return "listalibro";  //retorno esa vista
     }
 
      @GetMapping("/baja/{id}")
@@ -142,7 +141,7 @@ public class LibroController {
 
         try {
             libroServicio.baja(id);
-            return "redirect:/libro";
+            return "redirect:/libro/listalibro";
         } catch (Exception e) {
             return "redirect:/";
         }
@@ -154,7 +153,7 @@ public class LibroController {
 
         try {
             libroServicio.alta(id);
-            return "redirect:/libro";
+            return "redirect:/libro/listalibro";
         } catch (Exception e) {
             return "redirect:/";
         }

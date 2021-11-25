@@ -1,125 +1,130 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <!--Head -->
-    <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head th:replace="/fragments/head :: head"></head>
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">  
-
-        <title>Registro Libro</title>  
     <body>
+        <header><!--Contenido del Header-->
 
-        <!-- Navigation -->
-        <nav th:replace="/fragments/navbar :: nav"></nav>
+            <!-- Navigation -->
+            <nav th:replace="/fragments/navbar :: nav"></nav>
 
-        <!-- Header 
-       <header th:replace="/fragments/headergenerico :: header"></header>-->
-
-        <section>
-            <div class="container m-5">
-
-                <div th:if="${exito}!=null" class="card text-white bg-success mb-3" >
-                    <div class="card-body">
-                        <h5 class="card-title">Exito</h5>
-                        <p class="card-text" th:text="${exito}"></p>
+            <div class="container-lg mt-5"><!--Contenedor-->
+                <div class="row m-0 d-flex w-100 justify-content-center mb-5">
+                    <div class="col-12 px-2 text-center">
+                        <h2 class="display-8 font-weight-bolder"> Editar Libro</h2>
                     </div>
                 </div>
-                <div th:if="${error}!=null" class="card text-white bg-danger mb-3" >
-                    <div class="card-body">
-                        <h5 class="card-title">Error</h5>
-                        <p class="card-text" th:text="${error}"></p>
-                    </div>
-                </div>
-                
-                <div class="row align-items-center">
-                    <div class="col-lg-6 order-lg-2">
-                        <div class="p-4">
-                            <img class="img-fluid rounded-square" src="/img/lib3.jpg" alt="">
+                <div class="row d.flex w-100 justify-content-around">
+
+                    <div class="container m-auto">
+                        <div th:if="${exito}!=null" class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Exito</h5>
+                                <p class="card-text" th:text="${exito}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${error}!=null" class="card text-white bg-danger mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Error</h5>
+                                <p class="card-text" th:text="${error}"></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 order-lg-1">
-                        <div class="p-4">
-                            <h2 class="display-7">Registrar Libro</h2>
+                    <div class="col-md-8">
+                       <form class="form-row " method="post" th:action="@{/libro/editarlibro}"th:object="${libro}">
+                    <input hidden th:field="*{id}">
+                            
+                             <!-- <form class="form-row" th:action="@{/libro/editarlibro/__${libro.id}__}"  th:object="${libro}" method="POST">
+                            <input hidden th:value="{id}" name="id">-->
+                            <div class="col-2">
+                                <label for="">Isbn</label>
+                            </div>
+                            <div class="col-10 mb-3">
+                                <input th:value="${libro.isbn}"  name="isbn" class="form-control w-100" type="number" placeholder="Ingrese el isbn">
+                            </div>
+                            <div class="col-2">
+                                <label for="">Titulo</label>
+                            </div>
+                            <div class="col-10 mb-3">
+                                <input th:value="${libro.titulo}" name="titulo" class="form-control w-100" type="text" placeholder="Titulo del libro">
+                            </div>
+                            <div class="col-2">
+                                <label for="">Anio</label>
+                            </div>
+                            <div class="col-10 mb-3">
+                                <input th:value="${libro.anio}" name="anio" class="form-control w-100" type="number" placeholder="Anio del libro" required min="1400">
+                            </div>
+                            <div class="col-2">
+                                <label for="">Ejemplares</label>
+                            </div>
+                            <div class="col-10 mb-3">
+                                <input th:value="${libro.ejemplares}" name="ejemplares" class="form-control w-100" type="number" placeholder="Ejemplares">
+                            </div>
+                            <div class="col-2">
+                                <label for="">Ejemplares Prestados</label>
+                            </div>
+                            <div class="col-10 mb-3">
+                                <input th:value="${libro.ePrestados}" name="ePrestados" class="form-control w-100" type="number" placeholder="Ejemplares Prestados">
+                            </div>
 
-                            <form th:action="@{/libro/modificar/__${libro.id}__}" method="POST" enctype="multipart/form-data">
-                                <input hidden th:value= "${id}" name="id">
-                                <label>ISBN</label> <input th:value="${libro.isbn}" type="text" class="form-control" name="isbn" placeholder="Isbn del libro">                                                   
+                            <div class="col-2">
+                                <label for="">Autor</label>
+                            </div>
+                             <!--AUTOR -->
+                            <div class="col-7 mb-3">
+                                <select class="form-control" th:field="*{autor}">
+                                    <option value="0" selected>Seleccione un Autor</option>
+                                    <option th:each="a : ${listaautor}" th:text="${a.nombre}" th:value="${a.id}"></option>
+                                </select>
+                            </div>
+                             
+                             
+                            <div class="col-3">
+                                <a href="/autor/crearautor" class="btn btn-outline-success btn-block w-100">Crear Autor</a>
+                            </div>
 
-                                <label>Titulo</label> <input th:value="${libro.titulo}" type="text" class="form-control" name="titulo" placeholder="Titulo del libro">
+                            <div class="col-2">
+                                <label for="">Editorial</label>
+                            </div>
+                            <div class="col-7 mb-3">
 
-                                <label>Anio</label> <input th:value="${libro.anio}" type="text" class="form-control" name="anio" placeholder="Anio del libro">
-
-                                <label>Ejemplares</label> <input th:value="${libro.ejemplares}" type="text" class="form-control" name="ejemplares" placeholder="Cantidad de ejemplares">
-
-                                <label>Ejemplares Prestados</label> <input th:value="${libro.ejemplaresPrestados}" type="text" class="form-control" name="ejemplaresPrestados" placeholder="Cantidad de ejemplares Prestados">
-
-                                <label>Ejemplares Restantes</label> <input th:value="${libro.ejemplaresRestantes}" type="text" class="form-control" name="ejemplaresRestantes" placeholder="Cantidad de ejemplares Restantes">
-                                
-                                <div class="form-inline">
-                                    <div class="form-group mb-2"> 
-                                        <label class="mx-sm-3">Autor</label>
-                                 <select class="form-control" name="idAutor"> 
-                                 <option th:each="autor : ${autores}" th:value="${autor.id}" th:text="${autor.nombre}"></option> <!-- COMBO ZONA para seleccionar-->
-                                 </select> 
+                                <select class="form-control" th:field="*{editorial}">
+                                    <option value="0" selected>Seleccione una Editorial</option>
+                                    <option th:each="e : ${listaeditorial}" th:utext="${e.nombre}" th:value="${e.id}" ></option>
+                                </select>                         
+                            </div>  
+                            <div class="col-3">
+                                <a href="/editorial/creareditorial" class="btn btn-outline-success btn-block w-100">Crear Editorial</a>
+                            </div>
 
 
-                                <!--<div class="form-inline">
-                                    <div class="form-group mb-2"> 
-                                        <label class="mx-sm-3">Autor</label>
-                                        <select id="inputState" class="form-control">
-                                            <option selected>Choose...</option>
-                                            <option value="1">Jorge Luis Borges</option>
-                                            <option value="2">Julio Cortazar</option>
-                                            <option value="3">Alfonsina Storni</option>
-                                            <option value="4">Virginia Woolf</option>
-                                            <option value="5">Isabel Allende</option>   
-                                        </select>-->
 
-                                        <a th:href="@{/autor/registro}" class="btn btn-primary mx-sm-3 m-2">Crear Autor</a>
-                                    </div>
-                                    
-                                    <div class="form-inline">
-                                    <div class="form-group mb-2"> 
-                                        <label class="mx-sm-3">Editorial</label>
-                                 <select class="form-control" name="idEditorial"> 
-                                 <option th:each="editorial : ${editoriales}" th:value="${editorial.id}" th:text="${editorial.nombre}"></option> <!-- COMBO ZONA para seleccionar-->
-                                 </select>
-
-                                    <!--<div class="form-inline">
-                                        <div class="form-group mb-2">  
-
-                                            <label class="mx-sm-3" >Editorial</label>
-                                            <select id="inputState" class="form-control">
-                                                <option selected>Choose...</option>
-                                                <option value="1">Aconcagua</option>
-                                                <option value="2">Araguaney</option>
-                                                <option value="3">Tepuy</option>
-                                                <option value="4">Salto Angel</option>
-                                                <option value="5">Santillana</option>                                    
-                                            </select>-->
-                                            <a th:href="@{/editorial/registro}" class="btn btn-primary mx-sm-3 m-2">Crear Editorial</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <br/><button type="submit" class="btn btn-primary">Guardar</button>
-
-                                <a th:href="@{/}" class="btn btn-primary">Volver</a>
-
-                            </form>
-                        </div>
+                            <div class="col-12 mt-3 mb-3">
+                                <button class="btn btn-success btn-block w-100" type="submit">Crear</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Footer -->
-        <footer th:replace="/fragments/footer :: footer"></footer>
+                <section class="py-5 text-center container">
+                    <div class="row py-lg-5">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <a th:href="@{/}" class="btn btn-primary my-2">Volver</a>
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
-        <!-- Bootstrap core JavaScript -->
-        <script th:replace="/fragments/boostjs :: script"></script>
+                <!-- Footer -->
+                <footer th:replace="/fragments/footer :: footer"></footer>
+
+            </div><!--Fin Contenedor-->
+
+
+
+            <!-- Bootstrap core JavaScript -->
+            <script th:replace="/fragments/boostjs :: script"></script>
     </body>
 </html>

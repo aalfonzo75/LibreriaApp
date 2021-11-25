@@ -33,8 +33,8 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <form class="form-row" method="POST" th:action="@{/crearlibro}" th:object="${libro}">
-                           <!--   <input hidden th:field="*{id}">  -->
+                        <form th:action="@{/libro/crearlibro}" th:object="${libro}" class="form-row" method="POST">
+                            <!--   <input hidden th:field="*{id}">  -->
                             <div class="col-2">
                                 <label for="">Isbn</label>
                             </div>
@@ -65,14 +65,14 @@
                             <div class="col-10 mb-3">
                                 <input name="ePrestados" class="form-control w-100" type="number" placeholder="Ejemplares Prestados">
                             </div>
-                           
-                           <!-- Restantes 
-                            <div class="col-2">
-                                <label for="">Ejemplares Restantes</label>
-                            </div>
-                            <div class="col-10 mb-3">
-                                <input name="eRestantes" class="form-control w-100" type="text" placeholder="Ejemplares Restantes">
-                            </div>-->
+
+                            <!-- Restantes 
+                             <div class="col-2">
+                                 <label for="">Ejemplares Restantes</label>
+                             </div>
+                             <div class="col-10 mb-3">
+                                 <input name="eRestantes" class="form-control w-100" type="text" placeholder="Ejemplares Restantes">
+                             </div>-->
 
 
                             <div class="col-2">
@@ -80,12 +80,12 @@
                             </div>
                             <div class="col-7 mb-3">
                                 <select class="form-control" th:field="*{autor}">
-                          <option value="0" selected>Seleccione un Autor</option>
-                          <option th:each="a : ${listaautor}" th:utext="${a.nombre}" th:value="${a.id}"></option>
-                        </select>
+                                    <option value="0" selected>Seleccione un Autor</option>
+                                    <option th:each="a : ${listaautor}" th:utext="${a.nombre}" th:value="${a.id}"></option>
+                                </select>
                             </div>
                             <div class="col-3">
-                                <a href="/crearautor" class="btn btn-outline-success btn-block w-100">Crear Autor</a>
+                                <a href="/libro/crearautor" class="btn btn-outline-success btn-block w-100">Crear Autor</a>
                             </div>
 
                             <div class="col-2">
@@ -94,12 +94,12 @@
                             <div class="col-7 mb-3">
 
                                 <select class="form-control" th:field="*{editorial}">
-                            <option value="0" selected>Seleccione una Editorial</option>
-                            <option th:each="e : ${listaeditorial}" th:utext="${e.nombre}" th:value="${e.id}" ></option>
-                          </select>                         
+                                    <option value="0" selected>Seleccione una Editorial</option>
+                                    <option th:each="e : ${listaeditorial}" th:utext="${e.nombre}" th:value="${e.id}" ></option>
+                                </select>                         
                             </div>  
                             <div class="col-3">
-                                <a href="/creareditorial" class="btn btn-outline-success btn-block w-100">Crear Editorial</a>
+                                <a href="/editorial/creareditorial" class="btn btn-outline-success btn-block w-100">Crear Editorial</a>
                             </div>
 
 
@@ -110,6 +110,15 @@
                         </form>
                     </div>
                 </div>
+
+                <section class="py-5 text-center container">
+                    <div class="row py-lg-5">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <a th:href="@{/}" class="btn btn-primary my-2">Volver</a>
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
                 <!-- Footer -->
                 <footer th:replace="/fragments/footer :: footer"></footer>

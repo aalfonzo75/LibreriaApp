@@ -20,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class LibroServicio {
-    
+
     @Autowired
     private LibroRepositorio libroRepositorio;
-    
+
     @Autowired
     private AutorServicio autorServicio;
-    
+
     @Autowired
     private EditorialServicio editorialServicio;
 
@@ -35,7 +35,7 @@ public class LibroServicio {
     public void crearLibro(Libro lib) throws ErrorServicio {
         //valido todos los datos que no son objetos
         validarDatos(lib.getIsbn(), lib.getTitulo(), lib.getAnio(), lib.getEjemplares(), lib.getePrestados());
-                
+
         //valido los atributos que son objetos de otra clase
 //        if (libro.getAutor().toString().isEmpty() || libro.getAutor() == null) {
 //            throw new ErrorServicio("El Autor no puede ser nulo o vacio");
@@ -54,19 +54,17 @@ public class LibroServicio {
         libro.setAnio(lib.getAnio());
         libro.setEjemplares(lib.getEjemplares());
         libro.setePrestados(lib.getePrestados());
-        libro.seteRestantes(lib.getEjemplares()-lib.getePrestados());
+        libro.seteRestantes(lib.getEjemplares() - lib.getePrestados());
         libro.setAutor(lib.getAutor());
         libro.setEditorial(lib.getEditorial());
         libro.setAlta(true);
-        
+
         System.out.println("aqui creo mi libro en servicio");
         System.out.println("libro" + libro.toString());
-        
+
         libroRepositorio.save(libro);
     }
 
-    
-    
 //     @Transactional
 //    public Libro crearLibro(Libro libro) throws ErrorServicio {
 //        //valido todos los datos que no son objetos
@@ -92,9 +90,6 @@ public class LibroServicio {
 //        
 //        return libroRepositorio.save(libro);
 //    }
-    
-    
-    
 //    public Libro crearLibro(Libro libro) throws ErrorServicio {
 //        //valido todos los datos que no son objetos
 //        validarDatos(libro.getIsbn(), libro.getTitulo(), libro.getAnio(), libro.getEjemplares(), libro.getePrestados(), libro.geteRestantes());
@@ -116,38 +111,40 @@ public class LibroServicio {
 //    }
 //    
     @Transactional  //Si se ejecuta sin hacer excepciones hace comit a la BD y se aplican cambios
-    public Libro modificarLibro(Libro libro) throws ErrorServicio {
+    public Libro modificarLibro(Libro lib) throws ErrorServicio {
         //busco el libro
-        Libro lib = libroRepositorio.buscarPorId(libro.getId());
-        
-        if (lib != null) {
+        Libro libro = libroRepositorio.buscarPorId(lib.getId());
+
+        if (libro != null) {
             //valido todos los datos que no son objetos
-            validarDatos(libro.getIsbn(), libro.getTitulo(), libro.getAnio(), libro.getEjemplares(), libro.getePrestados());
+            validarDatos(lib.getIsbn(), lib.getTitulo(), lib.getAnio(), lib.getEjemplares(), lib.getePrestados());
             //Modificamos los valores   
-            lib.setIsbn(libro.getIsbn());
-            lib.setTitulo(libro.getTitulo());
-            lib.setAnio(libro.getAnio());
-            lib.setEjemplares(libro.getEjemplares());
-            lib.setePrestados(libro.getePrestados());
+            libro.setIsbn(lib.getIsbn());
+            libro.setTitulo(lib.getTitulo());
+            libro.setAnio(lib.getAnio());
+            libro.setEjemplares(lib.getEjemplares());
+            libro.setePrestados(lib.getePrestados());
+            libro.setAutor(lib.getAutor());
+            libro.setEditorial(lib.getEditorial());
 //            lib.seteRestantes(libro.geteRestantes());
-            
-            return libroRepositorio.save(lib);
+
+            return libroRepositorio.save(libro);
         } else {
             throw new ErrorServicio("No se encontro el libro con el id solicitado");
         }
     }
-    
+
     @Transactional
     public void eliminarLibro(Libro libro) throws ErrorServicio {
         //busco el libro
         Libro lib = libroRepositorio.buscarPorId(libro.getId());
-        if (lib != null) {            
+        if (lib != null) {
             libroRepositorio.delete(lib);
         } else {
             throw new ErrorServicio("No se encontro el libro con el id solicitado");
         }
     }
-    
+
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public Libro baja(String id) {
         Libro libro = libroRepositorio.getOne(id);
@@ -155,41 +152,42 @@ public class LibroServicio {
         return libroRepositorio.save(libro);
         //throw new ErrorServicio("No se encontro el libro con el id solicitado");
     }
-    
+
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public Libro alta(String id) {
         Libro libro = libroRepositorio.getOne(id);
         libro.setAlta(true);
         return libroRepositorio.save(libro);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Libro> listaTodosLibros() {
         return libroRepositorio.findAll();
     }
-    
+
     @Transactional(readOnly = true)
     public List<Libro> listaBuscarLibro(String buscarLibro) {
         return libroRepositorio.buscar(buscarLibro);
     }
-    
+
     @Transactional(readOnly = true)
     public List<Libro> listarActivos() {
         return libroRepositorio.buscarActivos();
     }
-    
+
     @Transactional(readOnly = true)
     public Libro getOne(String id) {
         return libroRepositorio.getOne(id);
     }
-    
+
     @Transactional(readOnly = true)
     public Libro buscarPorId(String id) {
         return libroRepositorio.buscarPorId(id);
     }
-                                                                                                  //, Integer eRestantes
+    //, Integer eRestantes
+
     public void validarDatos(Long isbn, String titulo, Integer anio, Integer ejemplares, Integer ePrestados) throws ErrorServicio {
-        
+
         if (isbn == null || isbn.toString().length() < 8) {
             throw new ErrorServicio("El ISBN es invalido");
         }
@@ -208,7 +206,7 @@ public class LibroServicio {
 //        if (eRestantes == null || eRestantes < 1) {
 //            throw new ErrorServicio("Los EjemplaresRestantes del libro no puede ser nulo");
 //        }
-        
+
     }
 
 //, String nombreE, String nombreA
