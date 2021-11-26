@@ -18,20 +18,7 @@
                 </div>
                 <div class="row d.flex w-100 justify-content-around">
 
-                    <div class="container m-auto">
-                        <div th:if="${exito}!=null" class="card text-white bg-success mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Exito</h5>
-                                <p class="card-text" th:text="${exito}"></p>
-                            </div>
-                        </div>
-                        <div th:if="${error}!=null" class="card text-white bg-danger mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Error</h5>
-                                <p class="card-text" th:text="${error}"></p>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-8">
                         <form th:action="@{/libro/crearlibro}" th:object="${libro}" class="form-row" method="POST">
                             <!--   <input hidden th:field="*{id}">  -->
@@ -85,7 +72,7 @@
                                 </select>
                             </div>
                             <div class="col-3">
-                                <a href="/libro/crearautor" class="btn btn-outline-success btn-block w-100">Crear Autor</a>
+                                <a href="/autor/crearautor" class="btn btn-outline-success btn-block w-100">Crear Autor</a>
                             </div>
 
                             <div class="col-2">

@@ -128,6 +128,9 @@ public class LibroServicio {
             libro.setEditorial(lib.getEditorial());
 //            lib.seteRestantes(libro.geteRestantes());
 
+            System.out.println("aqui modifico mi libro en servicio");
+            System.out.println("libro" + libro.toString());
+
             return libroRepositorio.save(libro);
         } else {
             throw new ErrorServicio("No se encontro el libro con el id solicitado");
@@ -145,7 +148,7 @@ public class LibroServicio {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    @Transactional
     public Libro baja(String id) {
         Libro libro = libroRepositorio.getOne(id);
         libro.setAlta(false);
@@ -153,7 +156,7 @@ public class LibroServicio {
         //throw new ErrorServicio("No se encontro el libro con el id solicitado");
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    @Transactional
     public Libro alta(String id) {
         Libro libro = libroRepositorio.getOne(id);
         libro.setAlta(true);
@@ -191,7 +194,7 @@ public class LibroServicio {
         if (isbn == null || isbn.toString().length() < 8) {
             throw new ErrorServicio("El ISBN es invalido");
         }
-        if (titulo == null || titulo.isEmpty() || titulo.contains(" ")) {
+        if (titulo == null || titulo.isEmpty()) {
             throw new ErrorServicio("El Titulo del libro no puede ser nulo");
         }
         if (anio.toString().length() != 4 || anio < Calendar.YEAR) {

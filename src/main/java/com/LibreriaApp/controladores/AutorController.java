@@ -53,18 +53,40 @@ public class AutorController {
             autorServicio.modificarAutor(id, nombre);
             model.put("exito", "Modificacion exitosa");
 
-            return "editarautor";
+            return "listaautor";
         } catch (ErrorServicio e) {
             model.put("error", "Falto algun dato");
             return "editarautor";
         }
     }
     
-    @GetMapping("/autor")
+    @GetMapping("/listaautor")
     public String lista(ModelMap model) {
         List<Autor> todos = autorServicio.listarTodos();
         model.addAttribute("autores", todos);
-        return "autor";  //retorno esa vista
+        return "listaautor";  //retorno esa vista
+    }
+    
+    @GetMapping("/baja/{id}")
+    public String baja(@PathVariable String id) {
+
+        try {
+            autorServicio.baja(id);
+            return "redirect:/autor/listaautor";
+        } catch (Exception e) {
+            return "redirect:/";
+        }
+    }
+    
+    @GetMapping("/alta/{id}")
+    public String alta(@PathVariable String id) {
+
+        try {
+            autorServicio.alta(id);
+            return "redirect:/autor/listaautor";
+        } catch (Exception e) {
+            return "redirect:/";
+        }
     }
 
 }

@@ -39,7 +39,7 @@ public class LibroController {
 
     @GetMapping("/crearlibro")
     public String guardarLibro(ModelMap model, @RequestParam(required = false) String id) {
-       
+
         if (id != null) {
             Libro libro = libroServicio.buscarPorId(id);
 
@@ -89,12 +89,12 @@ public class LibroController {
 //    }
     @PostMapping("/crearlibro")
     public String guardarLibro(ModelMap model, RedirectAttributes redirectAtr, @ModelAttribute Libro libro) {
-//        System.out.println("isbn" + libro.getIsbn());
-//        System.out.println("titulo" + libro.getTitulo());
-//        System.out.println("anio" + libro.getAnio());
-//        System.out.println("ejemplares" + libro.getEjemplares());
-//        System.out.println("autor" + libro.getAutor());
-//        System.out.println("editorial" + libro.getEditorial());
+        System.out.println("isbn" + libro.getIsbn());
+        System.out.println("titulo" + libro.getTitulo());
+        System.out.println("anio" + libro.getAnio());
+        System.out.println("ejemplares" + libro.getEjemplares());
+        System.out.println("autor" + libro.getAutor());
+        System.out.println("editorial" + libro.getEditorial());
 
         try {
 
@@ -106,21 +106,30 @@ public class LibroController {
             return "crearlibro";  //retorno esa vista
         }
     }
-
+//    @GetMapping("/editarlibro")
     @GetMapping("/editarlibro/{id}") // PATHVARIABLE: anotacion para configurar variables dentro de los propios segmentos de la URL para enviarlos
     public String modificar(@PathVariable String id, ModelMap model) {
 
+        List<Autor> autores = autorServicio.listarActivos(); //Se listan los autores activos
+        List<Editorial> editoriales = editorialServicio.listarActivos();
+        model.put("listaautor", autores);
+        model.put("listaeditorial", editoriales);
         model.put("libro", libroServicio.getOne(id));
 
         return "editarlibro";  //retorno esa vista
     }
 
+    
+//     @PostMapping("/editarlibro")
     @PostMapping("/editarlibro/{id}")
     public String modificar(ModelMap model, @PathVariable String id, @ModelAttribute Libro libro) {
         try {
             libroServicio.modificarLibro(libro);
             model.put("exito", "Modificacion exitosa");
-            return "editarlibro";
+            System.out.println("aqui modifico mi libro en el controlador");
+            System.out.println("titulo" + libro.getTitulo());
+        System.out.println("libro" + libro.toString());
+            return "redirect:/libro/listalibro";
         } catch (ErrorServicio e) {
             model.put("error", "Falto algun dato");
             return "editarlibro";
@@ -136,7 +145,7 @@ public class LibroController {
         return "listalibro";  //retorno esa vista
     }
 
-     @GetMapping("/baja/{id}")
+    @GetMapping("/baja/{id}")
     public String baja(@PathVariable String id) {
 
         try {
@@ -158,13 +167,7 @@ public class LibroController {
             return "redirect:/";
         }
     }
-   
-    
-    
-    
-    
-    
-    
+
 //     @GetMapping("/listalibros")
 //    public String listaLibros(ModelMap model, @RequestParam(required = false) String buscar) {
 //        //si el parametro "buscar" NO es nulo, agrega al modelo una lista de libros buscados

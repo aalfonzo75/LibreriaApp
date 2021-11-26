@@ -43,7 +43,7 @@ public class EditorialController {
     @GetMapping("/editareditorial/{id}") //PATHVARIABLE
     public String modificarEditorial(@PathVariable String id, ModelMap model) {
         model.put("editorial", editorialServicio.getOne(id));
-        return "creareditorial";
+        return "editareditorial";
     }
 
     @PostMapping("/editareditorial/{id}")
@@ -52,18 +52,40 @@ public class EditorialController {
             editorialServicio.modificarEditorial(id, nombre);
             model.put("exito", "Modificacion exitosa");
 
-            return "editareditorial";
+            return "listaeditorial";
         } catch (ErrorServicio e) {
             model.put("error", "Falto algun dato");
             return "editareditorial";
         }
     }
 
-    @GetMapping("/editorial")
+    @GetMapping("/listaeditorial")
     public String lista(ModelMap modelo) {
         List<Editorial> listaEditorial = editorialServicio.listarTodos();
         modelo.addAttribute("editoriales", listaEditorial);
-        return "editorial";
+        return "listaeditorial";
+    }
+    
+    @GetMapping("/baja/{id}")
+    public String baja(@PathVariable String id) {
+
+        try {
+            editorialServicio.baja(id);
+            return "redirect:/editorial/listaeditorial";
+        } catch (Exception e) {
+            return "redirect:/";
+        }
+    }
+    
+    @GetMapping("/alta/{id}")
+    public String alta(@PathVariable String id) {
+
+        try {
+            editorialServicio.alta(id);
+            return "redirect:/editorial/listaeditorial";
+        } catch (Exception e) {
+            return "redirect:/";
+        }
     }
 
 }

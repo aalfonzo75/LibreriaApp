@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -42,7 +43,7 @@ public class AutorServicio {
         if (respuesta.isPresent()) {
             Autor autor = respuesta.get();
             autor.setNombre(nombre);
-
+          
             return autorRepositorio.save(autor);
 
         } else {
@@ -51,19 +52,26 @@ public class AutorServicio {
 
     }
 
-    @Transactional
-    public void DarDeBajaAutor(String id) throws ErrorServicio {
+   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public Autor baja(String id) throws ErrorServicio {
 
         Optional<Autor> respuesta = autorRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Autor autor = respuesta.get();
             autor.setAlta(false);
 
-            autorRepositorio.save(autor);
+            return autorRepositorio.save(autor);
 
         } else {
             throw new ErrorServicio("No se encontro el autor con el id solicitado");
         }
+    }
+    
+     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public Autor alta(String id) {
+         Autor autor = autorRepositorio.getOne(id);
+        autor.setAlta(true);
+        return autorRepositorio.save(autor);
     }
 
     public void validarDatos(String nombre) throws ErrorServicio {
@@ -90,6 +98,18 @@ public class AutorServicio {
     @Transactional(readOnly = true)
     public Autor getOne(String id) {
         return autorRepositorio.getOne(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Autor> listarActivos() {
+        List<Autor> todos = listarTodos();
+        List<Autor> activos = new ArrayList();
+        for (Autor autor : todos) {
+            if (autor.getAlta()) {
+                activos.add(autor);
+            }
+        }
+        return activos;
     }
 
 }

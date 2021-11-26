@@ -17,27 +17,13 @@
                     </div>
                 </div>
                 <div class="row d.flex w-100 justify-content-around">
-
-                    <div class="container m-auto">
-                        <div th:if="${exito}!=null" class="card text-white bg-success mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Exito</h5>
-                                <p class="card-text" th:text="${exito}"></p>
-                            </div>
-                        </div>
-                        <div th:if="${error}!=null" class="card text-white bg-danger mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Error</h5>
-                                <p class="card-text" th:text="${error}"></p>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-8">
-                       <form class="form-row " method="post" th:action="@{/libro/editarlibro}"th:object="${libro}">
-                    <input hidden th:field="*{id}">
-                            
-                             <!-- <form class="form-row" th:action="@{/libro/editarlibro/__${libro.id}__}"  th:object="${libro}" method="POST">
-                            <input hidden th:value="{id}" name="id">-->
+                        <form class="form-row " th:action="@{/libro/editarlibro/__${libro.id}__}" th:object="${libro}" method="post" >
+                            <input hidden th:field="*{id}">
+
+                            <!-- <form class="form-row" th:action="@{/libro/editarlibro/__${libro.id}__}"  th:object="${libro}" method="POST">
+                           <input hidden th:value="{id}" name="id">-->
                             <div class="col-2">
                                 <label for="">Isbn</label>
                             </div>
@@ -72,15 +58,12 @@
                             <div class="col-2">
                                 <label for="">Autor</label>
                             </div>
-                             <!--AUTOR -->
                             <div class="col-7 mb-3">
-                                <select class="form-control" th:field="*{autor}">
+                                <select class="form-control" th:field="*{autor}">>
                                     <option value="0" selected>Seleccione un Autor</option>
                                     <option th:each="a : ${listaautor}" th:text="${a.nombre}" th:value="${a.id}"></option>
                                 </select>
                             </div>
-                             
-                             
                             <div class="col-3">
                                 <a href="/autor/crearautor" class="btn btn-outline-success btn-block w-100">Crear Autor</a>
                             </div>
@@ -92,7 +75,7 @@
 
                                 <select class="form-control" th:field="*{editorial}">
                                     <option value="0" selected>Seleccione una Editorial</option>
-                                    <option th:each="e : ${listaeditorial}" th:utext="${e.nombre}" th:value="${e.id}" ></option>
+                                    <option th:each="e : ${listaeditorial}" th:text="${e.nombre}" th:value="${e.id}" ></option>
                                 </select>                         
                             </div>  
                             <div class="col-3">
@@ -102,7 +85,7 @@
 
 
                             <div class="col-12 mt-3 mb-3">
-                                <button class="btn btn-success btn-block w-100" type="submit">Crear</button>
+                                <button class="btn btn-success btn-block w-100" type="submit">Actualizar</button>
                             </div>
                         </form>
                     </div>
